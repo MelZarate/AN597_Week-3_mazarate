@@ -1,0 +1,82 @@
+---
+title: "Homework 2 Original Code"
+author: "Mel Zarate"
+date: "9/25/2019"
+output: html_document
+---
+#Homework 2
+
+This is my first code for Homework 2. The homework states: 
+
+"Every Saturday morning, at the same time, a primatologist goes and sits in the forest to listen for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number of calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session."
+
+For the Poisson distribution, x=8 and lambda=15. To find the probability that 8 calls will be heard, I will use the dpois() function (thanks google): 
+
+```{r}
+dpois(x=8, lambda = 15)
+```
+
+And I'll repeat this method for finding the probability that there are no calls. 
+
+```{r}
+dpois(x=0, lambda = 15)
+```
+Super small, makes sense! 
+
+
+three calls? 
+```{r}
+dpois(x=3, lambda = 15)
+```
+
+Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+x <- 0:30
+l = 15
+probset<-dpois(x=x,lambda=l)
+barplot(probset,names.arg=x,space=0,xlab="x",ylab="Pr(X = x)",main="Probability Mass Function")
+```
+
+Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions). For this, I believe we'd use the rpois() function. 
+
+```{r}
+rpois(x = 104, lambda = 15) #x is the number of times we are simulating it, lambda, again is the assumed average
+```
+Ok that didn't work.. *continues googling*
+
+I'm going to try to set the variables before using rpois():
+
+```{r}
+x <- 104
+l = 15
+rpois(x,l)
+```
+Got it! now to plot these...
+
+Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+
+```{r}
+library(ggplot2)
+hist(rpois(x,l), 
+  main = "Observed Call Frequency",
+  xlab = "Number of Calls",
+  xlim = c(0,30)
+)
+```
+Compared to the earlier plot, we don't have any instances of less than ~6 or more than ~24 calls. 
+
+#Challenges
+
+1. The fact that this was supposed to be a Poisson distribution threw me off a bit, and I had to do some googling to see how to find the probability of an event given a mean in this distribution. I'm still a little confused by the difference between Poisson and normal distributions. 
+
+2. The same is true with bootstrapping- in class, we had discussed bootstrapping as take a subset of a sample a certain number of times and working with those means, and here we were just choosing one observation session 104 times. I had to work out the differences in doing so. 
+
+3. I had to mess around with the rpois() code to figure out how to set x as the number of simulations and lambda as the average.  
+
+Plotting challenges: 
+
+4. xlim() is a ggplot function?? I thought it was a built in function. 
+
+5. I had to re-organize the code a few times, mainly because of missing commas and/or parentheses. 
+
